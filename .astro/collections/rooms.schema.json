@@ -1,0 +1,101 @@
+{
+  "$ref": "#/definitions/rooms",
+  "definitions": {
+    "rooms": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "order": {
+          "type": "number"
+        },
+        "kind": {
+          "type": "string",
+          "enum": [
+            "private",
+            "dorm"
+          ]
+        },
+        "tagline": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "bedType": {
+          "type": "string"
+        },
+        "capacity": {
+          "type": "integer",
+          "exclusiveMinimum": 0
+        },
+        "bathroom": {
+          "type": "string"
+        },
+        "amenities": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "default": []
+        },
+        "cover": {
+          "type": "string",
+          "pattern": "^\\/images\\/",
+          "errorMessage": {
+            "pattern": "Use a path under /images/"
+          }
+        },
+        "gallery": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/rooms/properties/cover"
+          },
+          "default": []
+        },
+        "bookingUrl": {
+          "type": "string",
+          "format": "uri"
+        },
+        "draft": {
+          "type": "object",
+          "properties": {
+            "tagline": {
+              "type": "string"
+            },
+            "description": {
+              "type": "string"
+            },
+            "bedType": {
+              "type": "string"
+            },
+            "capacity": {
+              "type": "number"
+            },
+            "amenities": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          "additionalProperties": false
+        },
+        "todo": {
+          "type": "string"
+        },
+        "$schema": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "name",
+        "order",
+        "kind"
+      ],
+      "additionalProperties": false
+    }
+  },
+  "$schema": "http://json-schema.org/draft-07/schema#"
+}

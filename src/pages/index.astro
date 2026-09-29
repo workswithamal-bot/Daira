@@ -1,15 +1,216 @@
 ---
-import Layout from '../layouts/Base.astro';
----
+import { getCollection } from 'astro:content';
+import Base from '../layouts/Base.astro';
+import Photo from '../components/Photo.astro';
+import Button from '../components/Button.astro';
+import { site } from '../config/site';
 
-<Layout title="Daira | Kerala Artisanal Stay">
-  <main class="min-h-screen flex flex-col items-center justify-center p-8 text-center bg-[#1c1e1b] text-[#e2e4df]">
-    <h1 class="text-5xl font-bold tracking-tight mb-4">DAIRA</h1>
-    <p class="text-lg text-[#a3a89e] max-m-md">
-      An artisanal stay & creative space in Kerala.
-    </p>
-    <a href="/design/" class="mt-6 px-4 py-2 border border-[#a3a89e]/30 rounded text-sm hover:border-white transition-colors">
-      View Design Tokens (/design/)
-    </a>
-  </main>
-</Layout>
+const rooms = (await getCollection('rooms')).sort((a, b) => a.data.order - b.data.order);
+const posts = (await getCollection('journal', ({ data }) => !data.draft)).sort((a, b) => +b.data.date - +a.data.date).slice(0, 3);
+const spaces = ['Front yard', 'Back yard and garden', 'Upper terrace', 'Co-working space', 'Table tennis court', 'Dining area', 'Kitchen', 'Common areas'];
+const events = ['Music festivals', 'Flea markets', 'Workshops', 'Intimate weddings', 'Creative events'];
+const a = site.address;
+---
+<Base title={site.name} description="Daira is a roughly 50-year-old home in Talap, Kannur, used for art residency, co-living, co-working and gatherings.">
+
+  <!-- Hero -->
+  <section class="wrap hero">
+    <h1 class="wordmark">Daira</h1>
+    <div class="hero-meta">
+      <p class="label">{site.tagline}</p>
+      <div class="cta">
+        <Button href="/book/">Book your stay</Button>
+        <Button href="#four" variant="line">Explore Daira</Button>
+      </div>
+    </div>
+    <Photo slot="hero" ratio="auto" fill priority reveal />
+  </section>
+
+  <!-- Introduction -->
+  <section class="wrap section intro">
+    <p class="statement">A home in Kannur, roughly fifty years old, that has grown into a place for staying, making, working and gathering.</p>
+    <p>Daira is an art residency, a co-living house, a co-working space and a venue for gatherings, all at one address in Talap.</p>
+  </section>
+
+  <hr class="kasavu" />
+
+  <!-- Stay / Create / Work / Gather: four different compositions -->
+  <section class="wrap section four" id="four">
+    <article class="b stay">
+      <Photo src={rooms[0]?.data.cover ?? ''} label="STAY" alt="" ratio="4 / 3" sizes="(min-width:48rem) 58vw, 100vw" reveal />
+      <h2><a href="/stay/">Stay at Daira</a></h2>
+      <p>Six private rooms and a six-bed dormitory, with space for up to 18 guests overnight.</p>
+    </article>
+    <article class="b create">
+      <Photo slot="artists" ring sizes="(min-width:48rem) 30vw, 80vw" reveal />
+      <h2><a href="/create/">Create at Daira</a></h2>
+      <p>Daira hosts artists and gives them space to work. It also runs workshops and creative activities.</p>
+    </article>
+    <article class="b work">
+      <Photo slot="coworking" ratio="3 / 2" sizes="(min-width:48rem) 40vw, 100vw" reveal />
+      <h2><a href="/work/">Work at Daira</a></h2>
+      <p>A co-working space inside the house, with Wi-Fi.</p>
+    </article>
+    <article class="b gather">
+      <Photo slot="events" ratio="16 / 10" sizes="(min-width:48rem) 55vw, 100vw" reveal />
+      <h2><a href="/gather/">Gather at Daira</a></h2>
+      <p>Two open yards for festivals, markets, workshops and weddings.</p>
+    </article>
+  </section>
+
+  <!-- The house -->
+  <section class="wrap section house">
+    <Photo slot="exterior" ratio="4 / 5" sizes="(min-width:48rem) 45vw, 100vw" reveal />
+    <div class="stack">
+      <h2>The house</h2>
+      <p>A roughly 50-year-old home with seven bedrooms' worth of space, nine bathrooms, two open yards and a terrace. It is lived in and worked in every day.</p>
+      <ul class="index">{spaces.map((s) => <li>{s}</li>)}</ul>
+      <Button href="/space/" variant="text">See the spaces</Button>
+    </div>
+  </section>
+
+  <!-- Accommodation -->
+  <section class="wrap section rooms">
+    <div class="rooms-head">
+      <h2>Rooms</h2>
+      <Button href="/stay/" variant="line">View all rooms</Button>
+    </div>
+    <div class="rooms-grid">
+      <Photo src={rooms[0]?.data.cover ?? ''} label={rooms[0]?.data.name ?? 'ROOM'} alt={rooms[0]?.data.name ?? ''} ratio="4 / 5" sizes="(min-width:48rem) 40vw, 100vw" reveal />
+      <ol class="roomlist">
+        {rooms.map((r) => (
+          <li><a href={`/stay/#${r.id}`}><span>{r.data.name}</span>{r.data.bedType && <small>{r.data.bedType}</small>}</a></li>
+        ))}
+      </ol>
+    </div>
+  </section>
+
+  <!-- Create -->
+  <section class="section surface">
+    <div class="wrap split">
+      <div class="stack">
+        <h2>Making happens here</h2>
+        <p>Artists work at Daira, and the house holds workshops, music festivals and other creative activities. Ideas, collaborations and experiments are welcome.</p>
+        <Button href="/create/" variant="text">Explore Create</Button>
+      </div>
+      <Photo slot="details" ratio="3 / 4" sizes="(min-width:48rem) 35vw, 100vw" reveal />
+    </div>
+  </section>
+
+  <!-- Gather -->
+  <section class="wrap section gather-sec">
+    <h2>Gather</h2>
+    <div class="yards">
+      <div class="yard"><Photo slot="frontYard" ratio="4 / 3" sizes="(min-width:48rem) 45vw, 100vw" reveal /><h3>Front yard</h3><p class="cap">Up to 400 people</p></div>
+      <div class="yard yard--b"><Photo slot="backYard" ratio="4 / 3" sizes="(min-width:48rem) 45vw, 100vw" reveal /><h3>Back yard and garden</h3><p class="cap">Up to 500 people</p></div>
+    </div>
+    <p class="fine">These are event capacities, separate from overnight stays.</p>
+    <ul class="inline">{events.map((e) => <li>{e}</li>)}</ul>
+    <Button href="/gather/">Plan a gathering</Button>
+  </section>
+
+  <!-- Community -->
+  <section class="wrap section">
+    <div class="stack">
+      <h2>Artists, guests, workshop participants, musicians, friends.</h2>
+    </div>
+    <div class="people">
+      <Photo slot="artists" ratio="1 / 1" label="COMMUNITY 1" reveal />
+      <Photo slot="events" ratio="1 / 1" label="COMMUNITY 2" reveal />
+      <Photo slot="common" ratio="1 / 1" label="COMMUNITY 3" reveal />
+    </div>
+  </section>
+
+  <!-- Journal -->
+  <section class="wrap section">
+    <div class="rooms-head"><h2>Journal</h2><Button href="/journal/" variant="line">All entries</Button></div>
+    {posts.length ? (
+      <ul class="posts">{posts.map((p) => (
+        <li><a href={`/journal/${p.id}/`}><span class="label">{p.data.category} · {p.data.date.toLocaleDateString('en-IN', { dateStyle: 'medium' })}</span><h3>{p.data.title}</h3><p>{p.data.summary}</p></a></li>
+      ))}</ul>
+    ) : (
+      <p>Stories about artists, workshops and events will appear here. Meanwhile, follow Daira on <a href={site.social.instagram} target="_blank" rel="noopener noreferrer">Instagram</a>.</p>
+    )}
+  </section>
+
+  <!-- Location -->
+  <section class="wrap section split loc">
+    <div class="stack">
+      <h2>Kannur</h2>
+      <p>Daira is in Talap, in the city of Kannur, Kerala.</p>
+      <address>{site.legalName}<br />Plus Code: {a.plusCode}<br />{a.locality}<br />{a.region} {a.postalCode}, {a.country}</address>
+      <Button href={site.maps} variant="line" external>Open in Google Maps</Button>
+    </div>
+  </section>
+
+  <hr class="kasavu" />
+
+  <!-- Book -->
+  <section class="wrap section bookend">
+    <h2>Come stay at Daira</h2>
+    <div class="cta">
+      <Button href={site.booking} variant="line" external>Check availability</Button>
+      <Button href="/book/">Book your stay</Button>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .hero { display: grid; grid-template-rows: auto auto 1fr; gap: var(--space-5); min-height: calc(100svh - 4rem); padding-block: var(--space-5) var(--space-7); }
+  .wordmark { font-size: clamp(5.5rem, 24vw, 22rem); letter-spacing: -0.07em; line-height: 0.85; margin-left: -0.04em; }
+  .hero-meta { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: var(--space-4); }
+  .cta { display: flex; flex-wrap: wrap; gap: var(--space-3); }
+
+  .intro { display: grid; gap: var(--space-6); }
+  .statement { font-family: var(--font-display); font-size: var(--step-3); line-height: 1.08; letter-spacing: -0.03em; max-width: 24ch; }
+  @media (min-width: 64rem) { .intro { grid-template-columns: 3fr 1fr; align-items: end; } .statement { max-width: 28ch; } }
+
+  .four { display: grid; gap: var(--space-8) var(--gutter); }
+  .b h2 { font-size: var(--step-2); margin-top: var(--space-4); }
+  .b h2 a { text-decoration: none; }
+  .b h2 a:hover { color: var(--accent); }
+  .b p { margin-top: var(--space-2); color: var(--ink-soft); }
+  @media (min-width: 48rem) {
+    .four { grid-template-columns: repeat(12, 1fr); align-items: start; }
+    .stay { grid-column: 1 / 8; } .create { grid-column: 9 / 13; margin-top: var(--space-9); }
+    .work { grid-column: 2 / 6; } .gather { grid-column: 7 / 13; margin-top: var(--space-7); }
+  }
+  @media (max-width: 47.99rem) { .create { max-width: 80%; } }
+
+  .house { display: grid; gap: var(--space-7); align-items: center; }
+  .index { list-style: none; padding: 0; margin: var(--space-5) 0; }
+  .index li { border-top: var(--border); padding-block: var(--space-2); font-family: var(--font-display); }
+  .index li:last-child { border-bottom: var(--border); }
+  @media (min-width: 48rem) { .house { grid-template-columns: 5fr 4fr; gap: var(--space-9); } }
+
+  .rooms-head { display: flex; justify-content: space-between; align-items: end; gap: var(--space-4); flex-wrap: wrap; margin-bottom: var(--space-7); }
+  .rooms-grid { display: grid; gap: var(--space-6); }
+  .roomlist { list-style: none; padding: 0; margin: 0; align-self: end; }
+  .roomlist a { display: flex; justify-content: space-between; align-items: baseline; gap: var(--space-4); padding-block: var(--space-4); border-top: var(--border); text-decoration: none; font-family: var(--font-display); font-size: var(--step-2); letter-spacing: -0.02em; transition: color var(--dur-base); }
+  .roomlist a:hover { color: var(--accent); }
+  .roomlist small { font-size: var(--step--1); color: var(--ink-soft); letter-spacing: 0; }
+  .roomlist li:last-child a { border-bottom: var(--border); }
+  @media (min-width: 48rem) { .rooms-grid { grid-template-columns: 4fr 5fr; gap: var(--space-9); } }
+
+  .surface { background: var(--surface); }
+  .split { display: grid; gap: var(--space-7); align-items: center; }
+  @media (min-width: 48rem) { .split { grid-template-columns: 1fr 1fr; gap: var(--space-9); } .loc { grid-template-columns: 1fr; } }
+
+  .gather-sec { display: grid; gap: var(--space-6); }
+  .yards { display: grid; gap: var(--space-6); }
+  .yard h3 { margin-top: var(--space-3); }
+  .cap { font-family: var(--font-display); font-size: var(--step-1); color: var(--accent); }
+  .fine { color: var(--ink-soft); font-size: var(--step--1); }
+  .inline { display: flex; flex-wrap: wrap; gap: var(--space-2) var(--space-5); list-style: none; padding: 0; margin: 0; font-family: var(--font-display); }
+  @media (min-width: 48rem) { .yards { grid-template-columns: 1fr 1fr; } .yard--b { margin-top: var(--space-8); } }
+
+  .people { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--space-3); margin-top: var(--space-7); }
+  .posts { list-style: none; padding: 0; margin: 0; display: grid; gap: var(--space-6); }
+  .posts a { display: block; text-decoration: none; border-top: var(--border); padding-top: var(--space-4); }
+  .posts h3 { margin-block: var(--space-2); }
+  @media (min-width: 48rem) { .posts { grid-template-columns: repeat(3, 1fr); } }
+
+  .bookend { display: grid; gap: var(--space-6); justify-items: start; }
+  .bookend h2 { font-size: var(--step-5); letter-spacing: -0.05em; max-width: 12ch; }
+  address { font-style: normal; }
+</style>

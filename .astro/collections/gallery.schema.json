@@ -1,0 +1,53 @@
+{
+  "$ref": "#/definitions/gallery",
+  "definitions": {
+    "gallery": {
+      "type": "object",
+      "properties": {
+        "$schema": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string"
+          },
+          "src": {
+            "type": "string",
+            "pattern": "^\\/images\\/",
+            "errorMessage": {
+              "pattern": "Use a path under /images/"
+            }
+          },
+          "alt": {
+            "type": "string"
+          },
+          "category": {
+            "type": "string",
+            "enum": [
+              "architecture",
+              "rooms",
+              "garden",
+              "people",
+              "art",
+              "events",
+              "details",
+              "common-spaces",
+              "coworking"
+            ]
+          }
+        },
+        "required": [
+          "title",
+          "src",
+          "alt",
+          "category"
+        ],
+        "additionalProperties": false
+      }
+    }
+  },
+  "$schema": "http://json-schema.org/draft-07/schema#"
+}

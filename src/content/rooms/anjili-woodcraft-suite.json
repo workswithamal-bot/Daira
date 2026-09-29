@@ -1,0 +1,7 @@
+{
+  "name": "Anjili Woodcraft Suite", "order": 4, "kind": "private",
+  "cover": "/images/rooms/anjili-1.jpg",
+  "gallery": ["/images/rooms/anjili-1.jpg", "/images/rooms/anjili-2.jpg", "/images/details/woodcraft-joinery.jpg"],
+  "draft": { "tagline": "Hand-carved wild jackfruit wood and traditional carpentry", "description": "Built around reclaimed Anjili (wild jackfruit) timber, showcasing traditional Kerala wood joinery, heavy timber bed frames, and warm wooden tones.", "bedType": "King Bed + Daybed", "capacity": 3, "amenities": ["WiFi", "Executive Desk", "Ensuite Bathroom", "Private Sit-out", "Air Conditioning"] },
+  "todo": "Confirm bed type, capacity 3, sit-out and timber claims."
+}

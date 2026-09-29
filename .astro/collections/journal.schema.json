@@ -1,0 +1,86 @@
+{
+  "$ref": "#/definitions/journal",
+  "definitions": {
+    "journal": {
+      "type": "object",
+      "properties": {
+        "title": {
+          "type": "string"
+        },
+        "date": {
+          "anyOf": [
+            {
+              "type": "string",
+              "format": "date-time"
+            },
+            {
+              "type": "string",
+              "format": "date"
+            },
+            {
+              "type": "integer",
+              "format": "unix-time"
+            }
+          ]
+        },
+        "category": {
+          "type": "string",
+          "enum": [
+            "Daira",
+            "Artists",
+            "Events",
+            "Workshops",
+            "Community",
+            "Kannur"
+          ]
+        },
+        "cover": {
+          "type": "string",
+          "pattern": "^\\/images\\/",
+          "errorMessage": {
+            "pattern": "Use a path under /images/"
+          }
+        },
+        "coverAlt": {
+          "type": "string"
+        },
+        "gallery": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/journal/properties/cover"
+          },
+          "default": []
+        },
+        "author": {
+          "type": "string"
+        },
+        "tags": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "default": []
+        },
+        "summary": {
+          "type": "string"
+        },
+        "draft": {
+          "type": "boolean",
+          "default": false
+        },
+        "$schema": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "title",
+        "date",
+        "category",
+        "author",
+        "summary"
+      ],
+      "additionalProperties": false
+    }
+  },
+  "$schema": "http://json-schema.org/draft-07/schema#"
+}

@@ -1,0 +1,4 @@
+{
+  "name": "Dormitory", "order": 7, "kind": "dorm", "bedType": "Bunk beds", "capacity": 6,
+  "todo": "Capacity is 6 beds. Confirm bathroom, amenities, photos."
+}

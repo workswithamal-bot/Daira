@@ -1,0 +1,4 @@
+{
+  "name": "Deluxe Room — King Bed", "order": 5, "kind": "private", "bedType": "King Bed",
+  "todo": "Old rooms.json has one Deluxe Room (Queen) and a Queen Room; neither matches. Confirm capacity, amenities, photos."
+}

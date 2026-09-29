@@ -1,0 +1,7 @@
+{
+  "name": "Kasavu Room", "order": 1, "kind": "private",
+  "cover": "/images/rooms/kasavu-1.jpg",
+  "gallery": ["/images/rooms/kasavu-1.jpg", "/images/rooms/kasavu-2.jpg", "/images/details/kasavu-craft.jpg"],
+  "draft": { "tagline": "Inspired by Kerala's classic handwoven gold & cream textiles", "description": "A serene room featuring handwoven Kasavu textile accents, warm ambient lighting, and natural brass finishes.", "bedType": "King Bed", "capacity": 2, "amenities": ["WiFi", "Work Desk", "Ensuite Bathroom", "Air Conditioning", "Artisanal Decor"] },
+  "todo": "Old rooms.json says King bed; Zotel notes say the King is in a Deluxe room. Confirm bed type, capacity, amenities and description."
+}

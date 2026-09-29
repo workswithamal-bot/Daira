@@ -1,0 +1,7 @@
+{
+  "name": "Mannu Terracotta & Earth Suite", "order": 2, "kind": "private",
+  "cover": "/images/rooms/mannu-1.jpg",
+  "gallery": ["/images/rooms/mannu-1.jpg", "/images/rooms/mannu-2.jpg", "/images/details/terracotta-pottery.jpg"],
+  "draft": { "tagline": "Earthy tones, clay finishes, and raw earthenware craftsmanship", "description": "Designed with handcrafted terracotta tiles, exposed mud-plaster textures, and clay pottery accents that keep the space naturally cool.", "bedType": "King Bed", "capacity": 2, "amenities": ["WiFi", "Dedicated Workspace", "Private Balcony", "Ensuite Bathroom", "Air Conditioning"] },
+  "todo": "Confirm bed type (draft says King), balcony, materials and description against Zotel and the room itself."
+}

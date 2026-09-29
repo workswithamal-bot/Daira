@@ -1,4 +1,4 @@
-import { existsSync } from 'node:fs';
+import { statSync } from 'node:fs';
 import { join } from 'node:path';
 
 // Owner-editable image map. Drop a photo into /public/images/<folder>/ and
@@ -11,17 +11,23 @@ export const images = {
   exterior:   { file: 'exterior/house.jpg',       alt: 'TODO alt text', label: 'HOUSE EXTERIOR' },
   frontYard:  { file: 'exterior/front-yard.jpg',  alt: 'TODO alt text', label: 'FRONT YARD' },
   backYard:   { file: 'garden/back-yard.jpg',     alt: 'TODO alt text', label: 'BACKYARD' },
-  coworking:  { file: 'coworking/coworking.jpg',  alt: 'TODO alt text', label: 'CO-WORKING' },
+  coworking:  { file: 'coworking/study-desks.jpg',  alt: 'TODO alt text', label: 'CO-WORKING' },
   dorm:       { file: 'dorm/dorm.jpg',            alt: 'TODO alt text', label: 'DORMITORY' },
-  common:     { file: 'common-spaces/common.jpg', alt: 'TODO alt text', label: 'COMMON SPACE' },
+  common:     { file: 'common-spaces/main-foyer.jpg', alt: 'TODO alt text', label: 'COMMON SPACE' },
   artists:    { file: 'artists/artists.jpg',      alt: 'TODO alt text', label: 'ARTISTS' },
   events:     { file: 'events/events.jpg',        alt: 'TODO alt text', label: 'EVENTS' },
-  details:    { file: 'details/details.jpg',      alt: 'TODO alt text', label: 'DETAILS' },
+  details:    { file: 'details/pottery-console.jpg',      alt: 'TODO alt text', label: 'DETAILS' },
 } satisfies Record<string, Slot>;
 
 export type SlotKey = keyof typeof images;
 
 export function resolve(slot: Slot) {
-  const exists = existsSync(join(process.cwd(), 'public', 'images', slot.file));
+  let exists = false;
+  try { exists = !!slot.file && statSync(join(process.cwd(), 'public', 'images', slot.file)).isFile(); } catch { /* missing file */ }
   return { ...slot, src: `/images/${slot.file}`, exists };
+}
+
+export function resolveFile(src: string, label: string, alt: string) {
+  const file = src.replace(/^\/images\//, '');
+  return resolve({ file, alt, label });
 }

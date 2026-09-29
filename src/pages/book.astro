@@ -1,0 +1,18 @@
+---
+import Base from '../layouts/Base.astro';
+import Button from '../components/Button.astro';
+import { site, whatsappUrl } from '../config/site';
+---
+<Base title="Book your stay" description="Book a room or dormitory bed at Daira Art Residency in Talap, Kannur through our booking system.">
+  <section class="wrap section stack">
+    <h1>Book your stay</h1>
+    <p>Rooms, availability and prices are handled by Daira's booking system, so you always see current information.</p>
+    <div class="row">
+      <Button href={site.booking} external>Check availability</Button>
+      <Button href={whatsappUrl()} variant="line" external>Ask on WhatsApp</Button>
+    </div>
+    <p>Prefer to call? {site.phones.map((p, i) => <><a href={`tel:+91${p}`}>{p}</a>{i < site.phones.length - 1 && ', '}</>)}</p>
+    <!-- TODO Phase 6: embed Zotel widget here if Zotel supplies an official embed snippet. -->
+  </section>
+</Base>
+<style>.row { display: flex; flex-wrap: wrap; gap: var(--space-3); }</style>
