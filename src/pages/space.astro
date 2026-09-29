@@ -1,0 +1,73 @@
+---
+import { getCollection } from 'astro:content';
+import Base from '../layouts/Base.astro';
+import PageHead from '../components/PageHead.astro';
+import Photo from '../components/Photo.astro';
+import Button from '../components/Button.astro';
+
+const rooms = (await getCollection('rooms')).sort((a, b) => a.data.order - b.data.order);
+const gallery = await getCollection('gallery');
+const altFor = (src: string, fallback: string) => gallery.find((g) => g.data.src === src)?.data.alt ?? fallback;
+
+// One chapter per space. Only confirmed facts go in `text`; leave it empty rather than guess.
+type Chapter = { id: string; name: string; text?: string; slot?: 'exterior' | 'frontYard' | 'backYard' | 'coworking' | 'common'; src?: string };
+const chapters: Chapter[] = [
+  { id: 'house', name: 'The house', text: 'A roughly 50-year-old home in Talap, Kannur.', slot: 'exterior' },
+  { id: 'front-yard', name: 'Front yard', text: 'An open yard for gatherings, up to about 400 people.', slot: 'frontYard' },
+  { id: 'back-yard', name: 'Back yard and garden', text: 'The larger of the two yards, up to about 500 people.', slot: 'backYard' },
+  { id: 'terrace', name: 'Upper terrace' },
+  { id: 'coworking', name: 'Co-working space', text: 'Where work happens, with Wi-Fi.', slot: 'coworking' },
+  { id: 'table-tennis', name: 'Table tennis court' },
+  { id: 'dining', name: 'Dining area', src: '/images/common-spaces/dining-room.jpg' },
+  { id: 'kitchen', name: 'Kitchen' },
+  { id: 'rooms', name: 'Rooms and dormitory', text: 'Six private rooms and a six-bed dormitory.', src: rooms[0]?.data.cover },
+  { id: 'common', name: 'Common spaces', slot: 'common' },
+];
+---
+<Base title="Space" description="Explore Daira: a roughly 50-year-old home in Talap, Kannur with two open yards, a terrace, co-working space, dining area, kitchen, rooms and common spaces.">
+  <PageHead title="The space" intro="Walk through the house, room by room and yard by yard." />
+
+  <div class="wrap layout">
+    <nav class="toc" aria-label="Spaces">
+      <ul>{chapters.map((c) => <li><a href={`#${c.id}`}>{c.name}</a></li>)}</ul>
+    </nav>
+    <div class="chapters">
+      {chapters.map((c) => (
+        <section class="chapter" id={c.id}>
+          {c.slot
+            ? <Photo slot={c.slot} label={c.name.toUpperCase()} ratio="4 / 3" sizes="(min-width:64rem) 60vw, 100vw" reveal />
+            : <Photo src={c.src ?? ''} label={c.name.toUpperCase()} alt={c.src ? altFor(c.src, c.name) : c.name} ratio="4 / 3" sizes="(min-width:64rem) 60vw, 100vw" reveal />}
+          <h2>{c.name}</h2>
+          {c.text && <p>{c.text}</p>}
+        </section>
+      ))}
+    </div>
+  </div>
+
+  <hr class="kasavu" />
+  <section class="wrap section end">
+    <h2>Come and see it</h2>
+    <div class="cta"><Button href="/book/">Book your stay</Button><Button href="/gather/" variant="line">Plan a gathering</Button></div>
+  </section>
+</Base>
+
+<style>
+  .layout { display: grid; gap: var(--space-6); padding-block: var(--space-7) var(--section); }
+  .toc { display: none; }
+  .chapters { display: grid; gap: var(--space-9); }
+  .chapter { display: grid; gap: var(--space-3); scroll-margin-top: 5rem; }
+  .chapter h2 { font-size: var(--step-3); }
+  .chapter p { color: var(--ink-soft); }
+  @media (min-width: 64rem) {
+    .layout { grid-template-columns: 14rem 1fr; gap: var(--space-9); align-items: start; }
+    .toc { display: block; position: sticky; top: 6rem; }
+    .toc ul { list-style: none; padding: 0; margin: 0; }
+    .toc a { display: block; padding-block: var(--space-2); border-top: var(--border); font-family: var(--font-display); font-size: var(--step--1); text-decoration: none; transition: color var(--dur-base); }
+    .toc a:hover { color: var(--accent); }
+    .chapter:nth-child(even) { padding-left: 12%; }
+    .chapter:nth-child(3n) { padding-right: 12%; }
+  }
+  .end { display: grid; gap: var(--space-5); justify-items: start; }
+  .end h2 { font-size: var(--step-5); letter-spacing: -0.05em; }
+  .cta { display: flex; flex-wrap: wrap; gap: var(--space-3); }
+</style>

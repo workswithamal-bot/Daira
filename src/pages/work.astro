@@ -1,0 +1,44 @@
+---
+import { getCollection } from 'astro:content';
+import Base from '../layouts/Base.astro';
+import PageHead from '../components/PageHead.astro';
+import Photo from '../components/Photo.astro';
+import Button from '../components/Button.astro';
+import { whatsappUrl, messages } from '../config/site';
+
+const shots = (await getCollection('gallery')).filter((g) => g.data.category === 'coworking');
+---
+<Base title="Work" description="A co-working space with Wi-Fi inside Daira Art Residency in Talap, Kannur, among artists and guests.">
+  <PageHead title="Work at Daira" intro="A co-working space inside a house full of people making things." />
+
+  <section class="wrap split">
+    <div class="stack">
+      <p>Daira has a co-working space with Wi-Fi. You work in the same house where artists are making, guests are staying and gatherings are planned.</p>
+      <p>If you are thinking about a longer stay to work, get in touch and tell us your dates.</p>
+      <Button href={whatsappUrl(messages.work)} external>Ask about working here</Button>
+    </div>
+    <div class="shots">
+      {shots.length
+        ? shots.map((s) => <figure><Photo src={s.data.src} label="CO-WORKING" alt={s.data.alt} ratio="3 / 2" sizes="(min-width:48rem) 50vw, 100vw" reveal /><figcaption class="label">{s.data.title}</figcaption></figure>)
+        : <Photo slot="coworking" ratio="3 / 2" sizes="(min-width:48rem) 50vw, 100vw" reveal />}
+    </div>
+  </section>
+
+  <section class="wrap section">
+    <Photo slot="common" ratio="21 / 9" sizes="100vw" reveal />
+  </section>
+
+  <section class="wrap section stay-cta">
+    <h2>Stay while you work</h2>
+    <p>Rooms and a dormitory are in the same house.</p>
+    <Button href="/stay/" variant="line">See the rooms</Button>
+  </section>
+</Base>
+
+<style>
+  .split { display: grid; gap: var(--space-7); padding-block: var(--space-7); align-items: start; }
+  .shots { display: grid; gap: var(--space-4); }
+  figcaption { margin-top: var(--space-2); }
+  @media (min-width: 48rem) { .split { grid-template-columns: 4fr 7fr; gap: var(--space-9); } }
+  .stay-cta { display: grid; gap: var(--space-4); justify-items: start; }
+</style>

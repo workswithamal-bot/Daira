@@ -1,0 +1,14 @@
+---
+interface Props { title: string; intro?: string; }
+const { title, intro } = Astro.props;
+---
+<header class="wrap ph">
+  <h1>{title}</h1>
+  {intro && <p class="intro">{intro}</p>}
+</header>
+<hr class="kasavu" />
+<style>
+  .ph { padding-block: var(--space-8) var(--space-7); display: grid; gap: var(--space-5); }
+  .ph h1 { font-size: var(--step-5); letter-spacing: -0.05em; }
+  .intro { font-family: var(--font-display); font-size: var(--step-2); line-height: 1.2; letter-spacing: -0.02em; max-width: 30ch; }
+</style>

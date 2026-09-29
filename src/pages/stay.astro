@@ -1,0 +1,81 @@
+---
+import { getCollection } from 'astro:content';
+import Base from '../layouts/Base.astro';
+import PageHead from '../components/PageHead.astro';
+import Photo from '../components/Photo.astro';
+import Button from '../components/Button.astro';
+import { resolveFile } from '../config/images';
+import { site } from '../config/site';
+
+const rooms = (await getCollection('rooms')).sort((a, b) => a.data.order - b.data.order);
+const facts = [['6', 'private rooms'], ['1', 'dormitory, 6 beds'], ['18', 'guests overnight'], ['9', 'bathrooms']];
+const sleeps = (r: (typeof rooms)[number]) => r.data.capacity ? (r.data.kind === 'dorm' ? `${r.data.capacity} beds` : `Sleeps ${r.data.capacity}`) : null;
+---
+<Base title="Stay" description="Six private rooms and a six-bed dormitory at Daira Art Residency in Talap, Kannur. Check availability and book through our booking system.">
+  <PageHead title="Stay at Daira" intro="Six private rooms and a dormitory, in a roughly 50-year-old home in Kannur." />
+
+  <section class="wrap facts" aria-label="At a glance">
+    {facts.map(([n, l]) => <div><strong>{n}</strong><span>{l}</span></div>)}
+  </section>
+
+  <div class="wrap rooms">
+    {rooms.map((r) => {
+      const extra = r.data.gallery.slice(1).filter((g) => resolveFile(g, '', '').exists).slice(0, 3);
+      const rows = [
+        r.data.bedType && ['Bed', r.data.bedType],
+        sleeps(r) && ['Capacity', sleeps(r)],
+        r.data.bathroom && ['Bathroom', r.data.bathroom],
+        r.data.amenities.length ? ['Amenities', r.data.amenities.join(', ')] : null,
+      ].filter(Boolean) as unknown as string[][];
+      return (
+        <article class="room" id={r.id}>
+          <div class="media">
+            <Photo src={r.data.cover ?? ''} label={r.data.name} alt={r.data.name} ratio="4 / 5" sizes="(min-width:48rem) 50vw, 100vw" reveal />
+            {extra.length > 0 && <div class="thumbs">{extra.map((g) => <Photo src={g} label={r.data.name} alt={`${r.data.name}, more photos`} ratio="1 / 1" sizes="20vw" />)}</div>}
+          </div>
+          <div class="info stack">
+            <h2>{r.data.name}</h2>
+            {r.data.tagline && <p class="lede">{r.data.tagline}</p>}
+            {r.data.description && <p>{r.data.description}</p>}
+            {rows.length > 0 && <dl>{rows.map(([k, v]) => <div><dt>{k}</dt><dd>{v}</dd></div>)}</dl>}
+            {import.meta.env.DEV && r.data.todo && <p class="dev">TODO (dev only): {r.data.todo}</p>}
+            <Button href={r.data.bookingUrl ?? site.booking} external>Check availability</Button>
+          </div>
+        </article>
+      );
+    })}
+  </div>
+
+  <section class="wrap section bookend">
+    <p>Availability and prices are shown on the booking page, so they are always current.</p>
+    <Button href="/book/" variant="line">Book your stay</Button>
+  </section>
+</Base>
+
+<style>
+  .facts { display: grid; grid-template-columns: repeat(2, 1fr); gap: var(--space-5); padding-block: var(--space-7); }
+  .facts div { border-top: var(--border); padding-top: var(--space-3); display: grid; }
+  .facts strong { font-family: var(--font-display); font-size: var(--step-4); line-height: 1; letter-spacing: -0.04em; }
+  .facts span { color: var(--ink-soft); }
+  @media (min-width: 48rem) { .facts { grid-template-columns: repeat(4, 1fr); } }
+
+  .rooms { display: grid; gap: var(--space-9); padding-block: var(--space-7) var(--section); }
+  .room { display: grid; gap: var(--space-6); scroll-margin-top: 5rem; }
+  .thumbs { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--space-2); margin-top: var(--space-2); }
+  .info { align-self: end; }
+  .info h2 { font-size: var(--step-3); }
+  .lede { font-family: var(--font-display); font-size: var(--step-1); line-height: 1.25; }
+  dl { margin: 0; }
+  dl div { display: grid; grid-template-columns: 7rem 1fr; gap: var(--space-3); border-top: var(--border); padding-block: var(--space-2); }
+  dl div:last-child { border-bottom: var(--border); }
+  dt { font-family: var(--font-display); font-size: var(--step--1); color: var(--ink-soft); }
+  dd { margin: 0; }
+  .dev { font-family: var(--font-display); font-size: var(--step--1); border: 1px dashed var(--thread); padding: var(--space-2) var(--space-3); }
+  @media (min-width: 64rem) {
+    .room { grid-template-columns: 7fr 5fr; gap: var(--space-9); align-items: end; }
+    .room:nth-child(even) { grid-template-columns: 5fr 7fr; }
+    .room:nth-child(even) .media { order: 2; }
+    .room:nth-child(3n) .media { max-width: 80%; }
+  }
+  .bookend { display: grid; gap: var(--space-4); justify-items: start; }
+</style>

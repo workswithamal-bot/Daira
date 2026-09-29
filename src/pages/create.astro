@@ -1,0 +1,67 @@
+---
+import { getCollection } from 'astro:content';
+import Base from '../layouts/Base.astro';
+import PageHead from '../components/PageHead.astro';
+import Photo from '../components/Photo.astro';
+import Button from '../components/Button.astro';
+import { whatsappUrl, messages } from '../config/site';
+
+const artists = (await getCollection('artists')).sort((a, b) => b.data.year - a.data.year);
+const strands = [
+  ['Residency', 'Daira hosts artists and gives them space to work.'],
+  ['Workshops', 'Daira conducts workshops.'],
+  ['Music', 'Daira hosts music festivals.'],
+  ['Making and experiments', 'Creative activities and experimental event ideas are welcome.'],
+  ['Community', 'Artists, guests, workshop participants, musicians and friends share the house.'],
+];
+---
+<Base title="Create" description="Daira Art Residency hosts artists, workshops, music and creative activities in a roughly 50-year-old home in Talap, Kannur.">
+  <PageHead title="Create at Daira" intro="A place for artists to work, and for ideas to be tried out." />
+
+  <section class="wrap split">
+    <Photo slot="artists" ratio="4 / 5" sizes="(min-width:48rem) 45vw, 100vw" reveal />
+    <dl class="strands">
+      {strands.map(([k, v]) => <div><dt>{k}</dt><dd>{v}</dd></div>)}
+    </dl>
+  </section>
+
+  <section class="wrap section" id="artists">
+    <h2>Artists</h2>
+    {artists.length ? (
+      <ul class="artists">{artists.map((a) => (
+        <li id={a.id}>
+          {a.data.images[0] && <Photo src={a.data.images[0]} label={a.data.name} alt={`${a.data.name}, ${a.data.discipline}`} ratio="4 / 5" sizes="(min-width:48rem) 30vw, 100vw" />}
+          <h3>{a.data.name}</h3>
+          <p class="label">{a.data.discipline}, {a.data.year}</p>
+          {a.data.project && <p><strong>At Daira:</strong> {a.data.project}</p>}
+          <p>{a.data.summary}</p>
+          {a.data.links.map((l) => <a href={l.url} target="_blank" rel="noopener noreferrer">{l.label}</a>)}
+        </li>
+      ))}</ul>
+    ) : (
+      <p class="empty">Artist profiles will appear here as residents are added.</p>
+    )}
+  </section>
+
+  <hr class="kasavu" />
+  <section class="wrap section cta-block">
+    <h2>Have an idea?</h2>
+    <p>Daira is open to creative ideas, collaborations, gatherings and experiments. Tell us what you have in mind.</p>
+    <Button href={whatsappUrl(messages.create)} external>Share your idea</Button>
+  </section>
+</Base>
+
+<style>
+  .split { display: grid; gap: var(--space-7); padding-block: var(--space-7); align-items: end; }
+  .strands { margin: 0; }
+  .strands div { border-top: var(--border); padding-block: var(--space-4); display: grid; gap: var(--space-1); }
+  .strands div:last-child { border-bottom: var(--border); }
+  dt { font-family: var(--font-display); font-size: var(--step-2); letter-spacing: -0.02em; }
+  dd { margin: 0; color: var(--ink-soft); max-width: 44ch; }
+  @media (min-width: 48rem) { .split { grid-template-columns: 5fr 6fr; gap: var(--space-9); } }
+  .artists { list-style: none; padding: 0; margin: var(--space-6) 0 0; display: grid; gap: var(--space-7); }
+  .artists li { display: grid; gap: var(--space-2); align-content: start; scroll-margin-top: 5rem; }
+  @media (min-width: 48rem) { .artists { grid-template-columns: repeat(3, 1fr); } }
+  .empty { margin-top: var(--space-4); color: var(--ink-soft); }
+  .cta-block { display: grid; gap: var(--space-4); justify-items: start; }
+</style>

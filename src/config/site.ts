@@ -28,3 +28,10 @@ export const site = {
 };
 export const whatsappUrl = (msg = site.whatsappMessage) =>
   `https://wa.me/${site.whatsapp}?text=${encodeURIComponent(msg)}`;
+
+// Prefilled WhatsApp enquiries, so no page hard-codes wording.
+export const messages = {
+  gather: 'Hello Daira, I would like to plan a gathering.\nKind of gathering:\nApproximate date:\nNumber of people:',
+  create: 'Hello Daira, I have an idea or collaboration to share.\nAbout me:\nThe idea:',
+  work: 'Hello Daira, I am interested in working from Daira.\nDates:\nNumber of people:',
+};

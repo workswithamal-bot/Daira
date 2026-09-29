@@ -1,0 +1,77 @@
+---
+import { getCollection } from 'astro:content';
+import Base from '../layouts/Base.astro';
+import PageHead from '../components/PageHead.astro';
+import Photo from '../components/Photo.astro';
+import Button from '../components/Button.astro';
+import { site, whatsappUrl, messages } from '../config/site';
+
+const upcoming = (await getCollection('events', ({ data }) => data.status === 'upcoming')).sort((a, b) => +a.data.date - +b.data.date);
+const kinds = ['Intimate weddings', 'Flea markets', 'Music festivals', 'Workshops', 'Community gatherings', 'Creative events', 'Experimental events'];
+const enquire = whatsappUrl(messages.gather);
+---
+<Base title="Gather" description="Front yard for up to about 400 people and back yard and garden for up to about 500 at Daira in Talap, Kannur. Festivals, flea markets, workshops and intimate weddings.">
+  <PageHead title="Gather at Daira" intro="Two open yards for festivals, markets, workshops, weddings and things nobody has tried yet." />
+
+  <section class="wrap yards">
+    <article class="yard">
+      <Photo slot="frontYard" ratio="4 / 5" sizes="(min-width:48rem) 50vw, 100vw" reveal />
+      <div class="cap"><h2>Front yard</h2><p class="n">Up to 400 people</p></div>
+    </article>
+    <article class="yard yard--b">
+      <Photo slot="backYard" ratio="4 / 5" sizes="(min-width:48rem) 50vw, 100vw" reveal />
+      <div class="cap"><h2>Back yard and garden</h2><p class="n">Up to 500 people</p></div>
+    </article>
+  </section>
+  <p class="wrap note">Capacities are approximate and refer to events. They are separate from overnight stays, which sleep up to 18.</p>
+
+  <section class="wrap section kinds">
+    <h2>What happens here</h2>
+    <ul>{kinds.map((k) => <li>{k}</li>)}</ul>
+  </section>
+
+  <section class="wrap section" id="events">
+    <h2>Upcoming</h2>
+    {upcoming.length ? (
+      <ul class="events">{upcoming.map((e) => (
+        <li>
+          <span class="label">{e.data.date.toLocaleDateString('en-IN', { dateStyle: 'long' })}</span>
+          <h3>{e.data.name}</h3>
+          <p>{e.data.summary}</p>
+          {e.data.link && <a href={e.data.link} target="_blank" rel="noopener noreferrer">Enquire or book</a>}
+        </li>
+      ))}</ul>
+    ) : (
+      <p class="empty">No events are listed right now. Follow <a href={site.social.instagram} target="_blank" rel="noopener noreferrer">Instagram</a> for news.</p>
+    )}
+  </section>
+
+  <hr class="kasavu" />
+  <section class="wrap section plan">
+    <h2>Plan a gathering</h2>
+    <p>Tell us the kind of gathering, the date you have in mind and how many people. We will reply with what is possible.</p>
+    <div class="cta">
+      <Button href={enquire} external>Plan a gathering</Button>
+      {site.phones.map((p) => <Button href={`tel:+91${p}`} variant="line">Call {p}</Button>)}
+    </div>
+  </section>
+</Base>
+
+<style>
+  .yards { display: grid; gap: var(--space-7); padding-block: var(--space-7) var(--space-4); }
+  .cap { display: flex; justify-content: space-between; align-items: baseline; gap: var(--space-4); flex-wrap: wrap; margin-top: var(--space-3); }
+  .cap h2 { font-size: var(--step-3); }
+  .n { font-family: var(--font-display); font-size: var(--step-2); color: var(--accent); }
+  @media (min-width: 48rem) { .yards { grid-template-columns: 1fr 1fr; gap: var(--space-8); align-items: start; } .yard--b { margin-top: var(--space-9); } }
+  .note { color: var(--ink-soft); font-size: var(--step--1); max-width: none; }
+  .kinds ul { list-style: none; padding: 0; margin: var(--space-6) 0 0; }
+  .kinds li { border-top: var(--border); padding-block: var(--space-4); font-family: var(--font-display); font-size: var(--step-3); letter-spacing: -0.03em; line-height: 1.05; }
+  .kinds li:last-child { border-bottom: var(--border); }
+  .events { list-style: none; padding: 0; margin: var(--space-5) 0 0; display: grid; gap: var(--space-6); }
+  .events li { border-top: var(--border); padding-top: var(--space-3); display: grid; gap: var(--space-2); }
+  @media (min-width: 48rem) { .events { grid-template-columns: repeat(3, 1fr); } }
+  .empty { margin-top: var(--space-4); color: var(--ink-soft); }
+  .plan { display: grid; gap: var(--space-4); justify-items: start; }
+  .plan h2 { font-size: var(--step-5); letter-spacing: -0.05em; }
+  .cta { display: flex; flex-wrap: wrap; gap: var(--space-3); }
+</style>
