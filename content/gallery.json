@@ -1,0 +1,72 @@
+[
+  {
+    "id": "cs-1",
+    "title": "TV & Living Lounge",
+    "category": "common-spaces",
+    "src": "/images/common-spaces/tv-lounge.jpg",
+    "alt": "TV lounge with traditional wooden seating"
+  },
+  {
+    "id": "cs-2",
+    "title": "Reading Nook",
+    "category": "common-spaces",
+    "src": "/images/common-spaces/sofa-nook.jpg",
+    "alt": "Cozy sofa corner with rug and sheer curtains"
+  },
+  {
+    "id": "cs-3",
+    "title": "Open Terrace Lounge",
+    "category": "common-spaces",
+    "src": "/images/common-spaces/terrace-lounge.jpg",
+    "alt": "Covered balcony seating surrounded by tropical foliage"
+  },
+  {
+    "id": "cowork-1",
+    "title": "Dedicated Workspaces",
+    "category": "coworking",
+    "src": "/images/coworking/study-desks.jpg",
+    "alt": "Wall-mounted desks with power outlets for remote work"
+  },
+  {
+    "id": "cs-4",
+    "title": "Main Foyer & Reception",
+    "category": "common-spaces",
+    "src": "/images/common-spaces/main-foyer.jpg",
+    "alt": "Spacious main hall with reception desk and staircase"
+  },
+  {
+    "id": "cs-5",
+    "title": "Art Gallery Hallway",
+    "category": "common-spaces",
+    "src": "/images/common-spaces/mural-hall.jpg",
+    "alt": "Hallway featuring vibrant Kerala mural art panels"
+  },
+  {
+    "id": "cs-6",
+    "title": "Heritage Daybed Lounge",
+    "category": "common-spaces",
+    "src": "/images/common-spaces/daybed-lounge.jpg",
+    "alt": "Vintage lounge chair with traditional winnowing basket wall decor"
+  },
+  {
+    "id": "cs-7",
+    "title": "Driftwood Light Staircase",
+    "category": "common-spaces",
+    "src": "/images/common-spaces/staircase-light.jpg",
+    "alt": "Upper staircase landing illuminated by a custom branch chandelier"
+  },
+  {
+    "id": "detail-1",
+    "title": "Earthen Pottery Display",
+    "category": "details",
+    "src": "/images/details/pottery-console.jpg",
+    "alt": "Slim wooden console displaying terracotta pottery and framed art"
+  },
+  {
+    "id": "cs-8",
+    "title": "Communal Dining Space",
+    "category": "common-spaces",
+    "src": "/images/common-spaces/dining-room.jpg",
+    "alt": "Wooden dining table set under ceiling fan"
+  }
+]
