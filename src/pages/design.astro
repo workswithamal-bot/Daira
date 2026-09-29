@@ -1,0 +1,42 @@
+---
+import Base from '../layouts/Base.astro';
+import Photo from '../components/Photo.astro';
+import Button from '../components/Button.astro';
+const swatches = [['bg', 'Lime wash'], ['surface', 'Plaster'], ['ink', 'Ink'], ['ink-soft', 'Ink soft'], ['accent', 'Monsoon moss'], ['thread', 'Kasavu thread']];
+const steps = ['-1', '0', '1', '2', '3', '4'];
+---
+<Base title="Design system" description="Internal design system reference for the Daira website." noindex>
+  <div class="wrap section stack">
+    <h1>Design system</h1>
+    <p>Internal reference. Toggle light and dark from the header; nothing here is public copy.</p>
+
+    <h2>Colour</h2>
+    <ul class="sw">{swatches.map(([v, n]) => <li><span style={`background:var(--${v})`}></span>{n}<small>--{v}</small></li>)}</ul>
+
+    <h2>Type</h2>
+    <div class="stack">
+      {steps.map((s) => <p style={`font-family:var(--font-display);font-size:var(--step-${s});line-height:1.1;max-width:none`}>Step {s}: art residency in Kannur</p>)}
+      <p>Body is Newsreader at a slightly open line height, capped near 62 characters. Kasavu is the gold double thread that separates major moments, and it only appears as a rule.</p>
+    </div>
+
+    <h2>Buttons and rules</h2>
+    <div class="row"><Button href="#">Book your stay</Button><Button href="#" variant="line">Check availability</Button><Button href="#" variant="text">Plan a gathering</Button></div>
+    <hr class="kasavu" />
+
+    <h2>Images</h2>
+    <div class="imgs">
+      <Photo slot="exterior" ratio="4 / 5" reveal />
+      <Photo slot="backYard" ring reveal />
+      <Photo slot="details" ratio="3 / 2" reveal />
+    </div>
+  </div>
+</Base>
+<style>
+  .sw { display: grid; grid-template-columns: repeat(auto-fill, minmax(10rem, 1fr)); gap: var(--space-4); list-style: none; padding: 0; margin: 0; }
+  .sw li { display: grid; gap: var(--space-1); font-family: var(--font-display); font-size: var(--step--1); }
+  .sw span { height: 4.5rem; border: var(--border); }
+  .sw small { color: var(--ink-soft); }
+  .row { display: flex; flex-wrap: wrap; gap: var(--space-4); align-items: center; }
+  .imgs { display: grid; gap: var(--space-5); align-items: end; }
+  @media (min-width: 48rem) { .imgs { grid-template-columns: 5fr 4fr 4fr; } }
+</style>

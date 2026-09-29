@@ -1,0 +1,29 @@
+---
+import { site } from '../config/site';
+const a = site.address;
+---
+<footer>
+  <hr class="kasavu" />
+  <div class="wrap section grid">
+    <div class="stack">
+      <p class="brand">{site.name}</p>
+      <p class="label">{site.tagline}</p>
+    </div>
+    <address class="stack">
+      <p>{site.legalName}<br />Plus Code: {a.plusCode}<br />{a.locality}<br />{a.region} {a.postalCode}, {a.country}</p>
+      <p>{site.phones.map((p, i) => <><a href={`tel:+91${p}`}>{p}</a>{i < site.phones.length - 1 && <br />}</>)}</p>
+    </address>
+    <ul class="stack links">
+      <li><a href={site.maps} target="_blank" rel="noopener noreferrer">Open in Google Maps</a></li>
+      <li><a href={site.social.instagram} target="_blank" rel="noopener noreferrer">Instagram</a></li>
+      <li><a href="/contact/">Contact</a></li>
+    </ul>
+  </div>
+</footer>
+<style>
+  .grid { display: grid; gap: var(--space-7); }
+  @media (min-width: 48rem) { .grid { grid-template-columns: 2fr 1.5fr 1fr; } }
+  .brand { font-family: var(--font-display); font-size: var(--step-3); font-weight: 700; letter-spacing: -0.04em; line-height: 1; }
+  address { font-style: normal; }
+  .links { list-style: none; padding: 0; margin: 0; }
+</style>

@@ -1,0 +1,16 @@
+---
+import { images, resolve, type SlotKey } from '../config/images';
+interface Props { slot: SlotKey; ratio?: string; ring?: boolean; priority?: boolean; reveal?: boolean; sizes?: string; class?: string; alt?: string; }
+const { slot, ratio = '4 / 5', ring = false, priority = false, reveal = false, sizes = '100vw', class: cls = '', alt } = Astro.props;
+const img = resolve(images[slot]);
+const style = ring ? undefined : `aspect-ratio:${ratio}`;
+---
+{img.exists ? (
+  <div class:list={['photo', ring && 'ring', cls]} style={style} data-reveal={reveal ? '' : undefined}>
+    <img src={img.src} alt={alt ?? img.alt} sizes={sizes} loading={priority ? 'eager' : 'lazy'} fetchpriority={priority ? 'high' : 'auto'} decoding="async" />
+  </div>
+) : (
+  <div class:list={['photo', 'photo--placeholder', ring && 'ring', cls]} style={style} role="img" aria-label={`Placeholder: ${img.label}`}>
+    <span>DAIRA IMAGE — {img.label}</span>
+  </div>
+)}

@@ -1,0 +1,48 @@
+---
+import '@fontsource-variable/bricolage-grotesque';
+import '@fontsource-variable/newsreader';
+import '@fontsource-variable/newsreader/wght-italic.css';
+import '../styles/global.css';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import WhatsAppButton from '../components/WhatsAppButton.astro';
+import { site } from '../config/site';
+import { themeInit } from '../scripts/theme';
+
+interface Props { title: string; description: string; image?: string; noindex?: boolean; }
+const { title, description, image, noindex = false } = Astro.props;
+const canonical = new URL(Astro.url.pathname, site.url).href;
+const fullTitle = title === site.name ? `${site.name} | ${site.tagline}` : `${title} | ${site.name}`;
+const og = image ? new URL(image, site.url).href : undefined;
+---
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{fullTitle}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    {noindex && <meta name="robots" content="noindex" />}
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content={site.legalName} />
+    <meta property="og:title" content={fullTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    {og && <meta property="og:image" content={og} />}
+    <meta name="twitter:card" content={og ? 'summary_large_image' : 'summary'} />
+    <meta name="twitter:title" content={fullTitle} />
+    <meta name="twitter:description" content={description} />
+    <meta name="theme-color" content="#eef0ec" />
+    <script is:inline set:html={themeInit}></script>
+    <!-- Analytics slot: wired in Phase 6 when PUBLIC_ANALYTICS_ID is set. -->
+  </head>
+  <body>
+    <a class="skip" href="#main">Skip to content</a>
+    <Header />
+    <main id="main"><slot /></main>
+    <Footer />
+    <WhatsAppButton />
+    <script>import '../scripts/reveal';</script>
+  </body>
+</html>

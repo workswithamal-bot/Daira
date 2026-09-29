@@ -1,0 +1,12 @@
+---
+import { whatsappUrl } from '../config/site';
+---
+<a class="wa" href={whatsappUrl()} target="_blank" rel="noopener noreferrer" aria-label="Chat with Daira on WhatsApp">
+  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M4 20l1.2-4.2A8 8 0 1 1 8.400 18.800z"/></svg>
+  <span>WhatsApp</span>
+</a>
+<style>
+  .wa { position: fixed; right: var(--gutter); bottom: max(var(--space-5), env(safe-area-inset-bottom)); z-index: 40; display: inline-flex; align-items: center; gap: var(--space-2); min-height: 3rem; padding: 0 1.1rem; border-radius: var(--radius-sm); background: var(--accent); color: var(--accent-ink); font-family: var(--font-display); font-size: var(--step--1); text-decoration: none; transition: transform var(--dur-base) var(--ease-out); }
+  .wa:hover { transform: translateY(-2px); }
+  @media (max-width: 40rem) { .wa span { display: none; } .wa { padding: 0 0.9rem; } }
+</style>
